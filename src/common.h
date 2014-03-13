@@ -4,8 +4,8 @@ typedef struct {
 	char id[25];
 	char name[128];
 	char url[128];
-	char status[2];
-	char uptime[4];
+	int status;
+	char uptime[25];
 	int index;
 } Monitor;
 

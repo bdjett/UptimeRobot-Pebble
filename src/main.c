@@ -16,9 +16,9 @@ void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, voi
 
 void in_received_handler(DictionaryIterator *iter, void *context) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "Received message!");
-    Tuple *text_tuple_name = dict_find(iter, MONITOR_NAME);
+    Tuple *text_tuple_url = dict_find(iter, MONITOR_URL);
 
-    if (text_tuple_name) {
+    if (text_tuple_url) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Got a name!");
         if (!monitorslist_is_on_top()) {
             window_stack_pop_all(true);

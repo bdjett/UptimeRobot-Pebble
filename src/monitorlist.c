@@ -24,8 +24,18 @@ static void monitors_menu_select_long_callback(struct MenuLayer *menu_layer, Men
 static Window *monitors_window;
 static MenuLayer *monitors_menu_layer;
 
+static GBitmap *x_menu_icon;
+static GBitmap *check_menu_icon;
+static GBitmap *pause_menu_icon;
+static GBitmap *question_menu_icon;
+
 void monitorslist_init(void) {
 	monitors_window = window_create();
+
+	x_menu_icon = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_X_ICON_SMALL);
+	check_menu_icon = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_CHECK_ICON_SMALL);
+	pause_menu_icon = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_PAUSE_ICON_SMALL);
+	question_menu_icon = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_QUESTION_ICON_SMALL);
 
 	monitors_menu_layer = menu_layer_create_fullscreen(monitors_window);
 	menu_layer_set_callbacks(monitors_menu_layer, NULL, (MenuLayerCallbacks) {
@@ -49,6 +59,10 @@ void monitorslist_show() {
 }
 
 void monitorslist_destroy(void) {
+	gbitmap_destroy(check_menu_icon);
+	gbitmap_destroy(question_menu_icon);
+	gbitmap_destroy(x_menu_icon);
+	gbitmap_destroy(pause_menu_icon);
 	layer_remove_from_parent(menu_layer_get_layer(monitors_menu_layer));
 	menu_layer_destroy_safe(monitors_menu_layer);
 	window_destroy_safe(monitors_window);
@@ -79,48 +93,69 @@ void monitorslist_in_received_handler(DictionaryIterator *iter) {
 		strncpy(monitor.id, id_tuple->value->cstring, sizeof(monitor.id));
 		strncpy(monitor.name, name_tuple->value->cstring, sizeof(monitor.name));
 		strncpy(monitor.url, url_tuple->value->cstring, sizeof(monitor.url));
-		strncpy(monitor.status, status_tuple->value->cstring, sizeof(monitor.status));
+		monitor.status = status_tuple->value->int16;
 		monitors[monitor.index] = monitor;
 		num_monitors++;
+		APP_LOG(APP_LOG_LEVEL_DEBUG, "%s - %s", monitor.id, monitor.name);
 		menu_layer_reload_data_and_mark_dirty(monitors_menu_layer);
 	}
 }
 
 static uint16_t monitors_menu_get_num_sections_callback(struct MenuLayer *menu_layer, void *callback_context) {
-        return 1;
+    return 1;
 }
 
 static uint16_t monitors_menu_get_num_rows_callback(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
-        return (num_monitors) ? num_monitors : 1;
+    return (num_monitors) ? num_monitors : 1;
 }
 
 static int16_t monitors_menu_get_header_height_callback(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
-        return MENU_CELL_BASIC_HEADER_HEIGHT;
+    return MENU_CELL_BASIC_HEADER_HEIGHT;
 }
 
 static int16_t monitors_menu_get_cell_height_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
-        return MENU_CELL_BASIC_CELL_HEIGHT;
+    return MENU_CELL_BASIC_CELL_HEIGHT;
 }
 
 static void monitors_menu_draw_header_callback(GContext *ctx, const Layer *cell_layer, uint16_t section_index, void *callback_context) {
-        menu_cell_basic_header_draw(ctx, cell_layer, "Monitors");
+    menu_cell_basic_header_draw(ctx, cell_layer, "Monitors");
 }
 
 static void monitors_menu_draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
-        if (strlen(monitorError) != 0) {
-                menu_cell_basic_draw(ctx, cell_layer, "Error!", monitorError, NULL);
-        } else if (num_monitors == 0) {
-                menu_cell_basic_draw(ctx, cell_layer, "Loading...", NULL, NULL);
-        } else {
-                menu_cell_basic_draw(ctx, cell_layer, monitors[cell_index->row].name, monitors[cell_index->row].url, NULL);
-        }
+    if (strlen(monitorError) != 0) {
+        menu_cell_basic_draw(ctx, cell_layer, "Error!", monitorError, NULL);
+    } else if (num_monitors == 0) {
+        menu_cell_basic_draw(ctx, cell_layer, "Loading...", NULL, NULL);
+    } else {
+		GBitmap *status_image;
+		switch (monitors[cell_index->row].status) {
+			case 0:
+				status_image = pause_menu_icon;
+				break;
+			case 1:
+				status_image = question_menu_icon;
+				break;
+			case 2:
+				status_image = check_menu_icon;
+				break;
+			case 8:
+				status_image = x_menu_icon;
+				break;
+			case 9:
+				status_image = x_menu_icon;
+				break;
+			default:
+				status_image = NULL;
+		}
+        menu_cell_basic_draw(ctx, cell_layer, monitors[cell_index->row].name, monitors[cell_index->row].url, status_image);
+    }
 }
 
 static void monitors_menu_select_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
-        strncpy(monitorId, monitors[cell_index->row].id, sizeof(monitorId));
+    strncpy(monitorId, monitors[cell_index->row].id, sizeof(monitorId));
 }
 
 static void monitors_menu_select_long_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
-        vibes_double_pulse();
+    vibes_double_pulse();
 
 }

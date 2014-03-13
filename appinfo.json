@@ -9,9 +9,31 @@
     "watchface": false
   },
   "appKeys": {
-    "dummy": 0
+    "id": 0,
+    "friendlyName": 1,
+    "url": 2,
+    "status": 3,
+    "index": 5
   },
   "resources": {
-    "media": []
+    "media": [
+        {
+            "type": "png",
+            "name": "IMAGE_CHECK_ICON_SMALL",
+            "file": "check_icon_small.png"
+        }, {
+            "type": "png",
+            "name": "IMAGE_X_ICON_SMALL",
+            "file": "x_icon_small.png"
+        }, {
+            "type": "png",
+            "name": "IMAGE_PAUSE_ICON_SMALL",
+            "file": "pause_icon_small.png"
+        }, {
+            "type": "png",
+            "name": "IMAGE_QUESTION_ICON_SMALL",
+            "file": "question_icon_small.png"
+        }
+    ]
   }
 }

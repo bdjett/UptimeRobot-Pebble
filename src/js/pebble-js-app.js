@@ -36,13 +36,17 @@ var getMonitors = function() {
                 if (req.status == 200) {
                     if (req.responseText) {
                         var response = JSON.parse(req.responseText);
-                        response["monitors"].forEach(function(element, index, array) {
-                            monitors[parseInt(element["id"])] = element;
-                            monitorIds.push(parseInt(element["id"]));
-                            var friendlyName = element["friendlyname"];
-                            var url = element["url"];
-                            var status = element["status"];
+                        var monitorsArray = response.monitors.monitor;
+                        monitorsArray.forEach(function(element, index, array) {
+                            monitors[parseInt(element.id)] = element;
+                            monitorIds.push(parseInt(element.id));
+                            var friendlyName = element.friendlyname;
+                            var url = element.url;
+                            var status = parseInt(element.status);
+                            var id = element.id;
                             appMessageQueue.push({'message': {
+                                                    'index': index,
+                                                    'id': id,
                                                     'friendlyName': friendlyName,
                                                     'url': url,
                                                     'status': status}});
