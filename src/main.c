@@ -2,6 +2,7 @@
 #include "pebble-assist.h"
 #include "common.h"
 #include "monitorlist.h"
+#include "details.h"
 
 static Window *window;
 static TextLayer *text_layer;
@@ -17,6 +18,7 @@ void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, voi
 void in_received_handler(DictionaryIterator *iter, void *context) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "Received message!");
     Tuple *text_tuple_url = dict_find(iter, MONITOR_URL);
+    Tuple *text_tuple_uptime = dict_find(iter, MONITOR_UPTIME);
 
     if (text_tuple_url) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Got a name!");
@@ -26,6 +28,14 @@ void in_received_handler(DictionaryIterator *iter, void *context) {
         }
         if (monitorslist_is_on_top()) {
             monitorslist_in_received_handler(iter);
+        }
+    } else if (text_tuple_uptime) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Got a status!");
+        if (!details_is_on_top()) {
+            details_show();
+        }
+        if (details_is_on_top()) {
+            details_in_received_handler(iter);
         }
     }
 }
@@ -41,6 +51,7 @@ static void init(void) {
     app_message_register_outbox_failed(out_failed_handler);
     app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
     monitorslist_init();
+    details_init();
 }
 
 int main(void) {
@@ -64,4 +75,5 @@ int main(void) {
     text_layer_destroy(text_layer);
     window_destroy(window);
     monitorslist_destroy();
+    details_destroy();
 }

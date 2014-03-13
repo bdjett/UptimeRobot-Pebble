@@ -1,8 +1,8 @@
 {
   "uuid": "ad4d6d24-c0f3-4bfb-95bc-902b66356176",
-  "shortName": "uptimerobot-pebble",
-  "longName": "uptimerobot-pebble",
-  "companyName": "MakeAwesomeHappen",
+  "shortName": "UptimeRobot",
+  "longName": "UptimeRobot for Pebble",
+  "companyName": "Logical Pixels",
   "versionCode": 1,
   "versionLabel": "1.0.0",
   "watchapp": {
@@ -13,7 +13,9 @@
     "friendlyName": 1,
     "url": 2,
     "status": 3,
-    "index": 5
+    "uptime": 4,
+    "index": 5,
+    "getStatus": 6
   },
   "resources": {
     "media": [
@@ -33,6 +35,22 @@
             "type": "png",
             "name": "IMAGE_QUESTION_ICON_SMALL",
             "file": "question_icon_small.png"
+        }, {
+            "type": "png",
+            "name": "IMAGE_QUESTION_ICON_LARGE",
+            "file": "question_icon_large.png"
+        }, {
+            "type": "png",
+            "name": "IMAGE_PAUSE_ICON_LARGE",
+            "file": "pause_icon_large.png"
+        }, {
+            "type": "png",
+            "name": "IMAGE_X_ICON_LARGE",
+            "file": "x_icon_large.png"
+        }, {
+            "type": "png",
+            "name": "IMAGE_CHECK_ICON_LARGE",
+            "file": "check_icon_large.png"
         }
     ]
   }

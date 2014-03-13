@@ -76,15 +76,14 @@ var getStatus = function(monitorId) {
     console.log("Getting status of monitorId: " + monitorId);
     if (monitors[parseInt(monitorId)]) {
         var monitor = monitors[parseInt(monitorId)];
-        var friendlyName = monitor["friendlyname"];
-        var url = monitor["url"];
-        var status = monitor["status"];
-        var uptimeRatio = monitor["alltimeuptimeratio"];
+        var friendlyName = monitor.friendlyname;
+        var status = parseInt(monitor.status);
+        var uptimeRatio = monitor.alltimeuptimeratio;
+        console.log(friendlyName + " " + uptimeRatio);
         appMessageQueue.push({'message':
                                 {'friendlyName': friendlyName.toString(),
-                                 'url': url.toString(),
-                                 'status': status.toString(),
-                                 'uptimeRatio': uptimeRatio.toString()}});
+                                 'status': status,
+                                 'uptime': uptimeRatio.toString()}});
         sendAppMessage();
     } else {
         sendError("Monitor does not exist.");
@@ -135,7 +134,8 @@ var sendAppMessage = function() {
 
 Pebble.addEventListener("appmessage", function(e) {
     if (e.payload.getStatus) {
-        getStatus(e.payload.monitorId);
+        console.log("Getting info for " + e.payload.id);
+        getStatus(e.payload.id);
     }
 });
 

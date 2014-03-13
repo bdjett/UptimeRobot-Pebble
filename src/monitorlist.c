@@ -2,6 +2,7 @@
 #include "pebble-assist.h"
 #include "common.h"
 #include "monitorlist.h"
+#include "details.h"
 
 #define MAX_MONITORS 10
 
@@ -153,6 +154,8 @@ static void monitors_menu_draw_row_callback(GContext *ctx, const Layer *cell_lay
 
 static void monitors_menu_select_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
     strncpy(monitorId, monitors[cell_index->row].id, sizeof(monitorId));
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "%s", monitorId);
+	getDetails(monitorId);
 }
 
 static void monitors_menu_select_long_callback(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
