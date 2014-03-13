@@ -1,0 +1,17 @@
+{
+  "uuid": "ad4d6d24-c0f3-4bfb-95bc-902b66356176",
+  "shortName": "uptimerobot-pebble",
+  "longName": "uptimerobot-pebble",
+  "companyName": "MakeAwesomeHappen",
+  "versionCode": 1,
+  "versionLabel": "1.0.0",
+  "watchapp": {
+    "watchface": false
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
