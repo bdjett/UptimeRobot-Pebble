@@ -1,6 +1,7 @@
 #include <pebble.h>
 #include "pebble-assist.h"
 #include "common.h"
+#include "monitorlist.h"
 
 static Window *window;
 static TextLayer *text_layer;
@@ -19,17 +20,17 @@ void in_received_handler(DictionaryIterator *iter, void *context) {
 
     if (text_tuple_name) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Got a name!");
-        if (!monitorlist_is_on_top()) {
-            window_satck_pop_all(true);
-            monitorlist_show();
+        if (!monitorslist_is_on_top()) {
+            window_stack_pop_all(true);
+            monitorslist_show();
         }
-        if (monitorlist_is_on_top()) {
-            monitorlist_in_received_handler(iter);
+        if (monitorslist_is_on_top()) {
+            monitorslist_in_received_handler(iter);
         }
     }
 }
 
-void ini_dropped_handler(AppMessageResult reason, void *context) {
+void in_dropped_handler(AppMessageResult reason, void *context) {
     APP_LOG(APP_LOG_LEVEL_DEBUG, "App message dropped!");
 }
 
@@ -39,7 +40,7 @@ static void init(void) {
     app_message_register_outbox_sent(out_sent_handler);
     app_message_register_outbox_failed(out_failed_handler);
     app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-    monitorlist_init();
+    monitorslist_init();
 }
 
 int main(void) {
@@ -62,5 +63,5 @@ int main(void) {
 
     text_layer_destroy(text_layer);
     window_destroy(window);
-    monitorlist_destroy();
+    monitorslist_destroy();
 }

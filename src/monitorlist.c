@@ -24,7 +24,7 @@ static void monitors_menu_select_long_callback(struct MenuLayer *menu_layer, Men
 static Window *monitors_window;
 static MenuLayer *monitors_menu_layer;
 
-void monitorlist_init(void) {
+void monitorslist_init(void) {
 	monitors_window = window_create();
 
 	monitors_menu_layer = menu_layer_create_fullscreen(monitors_window);
@@ -57,7 +57,7 @@ void monitorslist_destroy(void) {
 static void monitors_clean_list() {
 	memset(monitors, 0x0, sizeof(monitors));
 	num_monitors = 0;
-	monitorsError[0] = '\0';
+	monitorError[0] = '\0';
 	menu_layer_set_selected_index(monitors_menu_layer, (MenuIndex) { .row = 0, .section = 0 }, MenuRowAlignBottom, false);
 	menu_layer_reload_data_and_mark_dirty(monitors_menu_layer);
 }
@@ -80,7 +80,7 @@ void monitorslist_in_received_handler(DictionaryIterator *iter) {
 		strncpy(monitor.name, name_tuple->value->cstring, sizeof(monitor.name));
 		strncpy(monitor.url, url_tuple->value->cstring, sizeof(monitor.url));
 		strncpy(monitor.status, status_tuple->value->cstring, sizeof(monitor.status));
-		monitors[moniter.index] = monitor;
+		monitors[monitor.index] = monitor;
 		num_monitors++;
 		menu_layer_reload_data_and_mark_dirty(monitors_menu_layer);
 	}
