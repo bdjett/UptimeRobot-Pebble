@@ -67,7 +67,7 @@ int main(void) {
     text_layer_set_text_alignment(text_layer, GTextAlignmentCenter);
     text_layer_set_overflow_mode(text_layer, GTextOverflowModeWordWrap);
     text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
-    text_layer_set_text(text_layer, "Getting monitors from UptimeRobot...");
+    text_layer_set_text(text_layer, "Welcome to UptimeRobot!");
     layer_add_child(window_layer, text_layer_get_layer(text_layer));
 
     app_event_loop();

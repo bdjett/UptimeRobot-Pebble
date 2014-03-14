@@ -4,6 +4,9 @@
   "longName": "UptimeRobot for Pebble",
   "companyName": "Logical Pixels",
   "versionCode": 1,
+  "capabilities": [
+      "configurable"
+  ],
   "versionLabel": "1.0.0",
   "watchapp": {
     "watchface": false

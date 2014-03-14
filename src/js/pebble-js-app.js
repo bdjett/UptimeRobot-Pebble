@@ -140,6 +140,23 @@ Pebble.addEventListener("appmessage", function(e) {
 });
 
 Pebble.addEventListener("ready", function(e) {
-    localStorage["api_key"] = "u133021-5a86707198f9c60830ce4275";
-    getMonitors();
+    if (localStorage['api_key']) {
+        getMonitors();
+    } else {
+        sendError("Please enter your API key from UptimeRobot in the settings on the Pebble app.");
+    }
 });
+
+Pebble.addEventListener("showConfiguration", function(e) {
+    Pebble.openURL("http://logicalpixels.com/uptimerobot/uptimerobot_settings.html#" + localStorage['api_key']);
+});
+
+Pebble.addEventListener("webviewclosed", function(e) {
+    var configuration = JSON.parse(decodeURIComponent(e.response));
+    localStorage['api_key'] = configuration.api_key.toString();
+    if (localStorage['api_key']) {
+        getMonitors();
+    } else {
+        sendError("You didn't enter your API key in the settings app.");
+    }
+})
