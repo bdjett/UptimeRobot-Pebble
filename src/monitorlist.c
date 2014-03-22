@@ -4,7 +4,7 @@
 #include "monitorlist.h"
 #include "details.h"
 
-#define MAX_MONITORS 10
+#define MAX_MONITORS 50
 
 static Monitor monitors[MAX_MONITORS];
 
