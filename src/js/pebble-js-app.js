@@ -78,11 +78,13 @@ var getStatus = function(monitorId) {
         var monitor = monitors[parseInt(monitorId)];
         var friendlyName = monitor.friendlyname;
         var status = parseInt(monitor.status);
+        var url = monitor.url;
         var uptimeRatio = monitor.alltimeuptimeratio;
         console.log(friendlyName + " " + uptimeRatio);
         appMessageQueue.push({'message':
                                 {'friendlyName': friendlyName.toString(),
                                  'status': status,
+                                 'url': url,
                                  'uptime': uptimeRatio.toString()}});
         sendAppMessage();
     } else {

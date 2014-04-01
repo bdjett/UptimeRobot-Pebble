@@ -20,7 +20,15 @@ void in_received_handler(DictionaryIterator *iter, void *context) {
     Tuple *text_tuple_url = dict_find(iter, MONITOR_URL);
     Tuple *text_tuple_uptime = dict_find(iter, MONITOR_UPTIME);
 
-    if (text_tuple_url) {
+    if (text_tuple_uptime) {
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "Got a status!");
+        if (!details_is_on_top()) {
+            details_show();
+        }
+        if (details_is_on_top()) {
+            details_in_received_handler(iter);
+        }
+    } else if (text_tuple_url) {
         APP_LOG(APP_LOG_LEVEL_DEBUG, "Got a name!");
         if (!monitorslist_is_on_top()) {
             window_stack_pop_all(true);
@@ -28,14 +36,6 @@ void in_received_handler(DictionaryIterator *iter, void *context) {
         }
         if (monitorslist_is_on_top()) {
             monitorslist_in_received_handler(iter);
-        }
-    } else if (text_tuple_uptime) {
-        APP_LOG(APP_LOG_LEVEL_DEBUG, "Got a status!");
-        if (!details_is_on_top()) {
-            details_show();
-        }
-        if (details_is_on_top()) {
-            details_in_received_handler(iter);
         }
     }
 }
